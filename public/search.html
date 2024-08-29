@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/search_system/style.css">
+    <title>Search Reports</title>
+</head>
+
+<body style="background-image: url('https://www.umassd.edu/media/umassdartmouth/about/social/umassd-logo-zoom-backgrounds/20170419-architecture-kc-001-zoom-bg-umassd-logo.jpg'); background-size: cover;">
+
+<body>
+    <h1>Search Reports</h1>
+    <div class="container">
+        <form id="search-form">
+            <label for="author" style="font-size: 25px;">Author Name</label>
+            <input type="text" id="author" name="author">
+            <label for="title" style="font-size: 25px;">File Title</label>
+            <input type="text" id="title" name="title">
+            <label for="year" style="font-size: 25px;">Year</label>
+            <input type="number" id="year" name="year">
+            <label for="keywords" style="font-size: 25px;">Keywords</label>
+            <input type="text" id="keywords" name="keywords">
+            <input type="submit" value="Search">
+        </form>
+
+        <!-- <form id="search-form">
+            <label for="author" style="font-size: 25px;">Author Name</label>
+            <input type="text" id="author" name="author">
+            <label for="title" style="font-size: 25px;">File Title</label>
+            <input type="text" id="title" name="title">
+            <label for="year-from" style="font-size: 25px;">Year From</label>
+            <input type="number" id="year-from" name="year-from">
+            <label for="year-to" style="font-size: 25px;">Year To</label>
+            <input type="number" id="year-to" name="year-to">
+            <label for="keywords" style="font-size: 25px;">Keywords</label>
+            <input type="text" id="keywords" name="keywords">
+            <input type="submit" value="Search">
+          </form> -->
+      
+        <div id="results"></div>
+    </div>
+    <script src="search.js"></script>
+</body>
+</html>
+

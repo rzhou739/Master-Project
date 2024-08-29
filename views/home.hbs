@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{> header }}
+<body style="background-image: url(https://www.umassd.edu/media/umassdartmouth/about/social/umassd-logo-zoom-backgrounds/LibrarySunset_151102_047-zoom-bg-umassd-logo.jpg); background-size: cover; background-repeat: no-repeat;">
+
+  {{> navbar }}
+
+{{!-- <form id="my-form" class="upload-form" onsubmit="submitForm(event)" enctype="multipart/form-data" style="background-color: rgba(255, 255, 255, 0.5); ">
+  <!-- Add fields for author name(s), year, and keywords -->
+  <div id="author-container">
+    <label for="author1">Author name:</label>
+    <input type="text" id="author1" name="author1"><br>
+  </div>
+  <button type="button" onclick="addAuthor()">Add author</button><br>
+
+  <label for="file_title">File Title:</label>
+<input type="text" id="file_title" name="file_title" required>
+
+  <label for="year">Year:</label>
+  <input type="number" id="year" name="year"><br>
+  <label for="keywords">Keywords:</label>
+  <input type="text" id="keywords" name="keywords"><br>
+
+  <label for="file">Select a file:</label>
+  <input type="file" id="file" name="file">
+  <button type="submit">Upload</button>
+</form> --}}
+
+<form id="my-form" class="upload-form" onsubmit="submitForm(event)" enctype="multipart/form-data" style="background-color: rgba(255, 255, 255, 0.5); width:50%">
+  <!-- Add fields for author name(s), year, and keywords -->
+  <div id="author-container" style="font-size: 14px; padding: 5px;">
+    <label for="author1" style="font-size: 14px;">Author name:</label>
+    <input type="text" id="author1" name="author1" style="font-size: 14px; padding: 5px; width: 50%;"><br>
+  </div>
+  <button type="button" onclick="addAuthor()" style="font-size: 14px; padding: 5px;">Add author</button><br>
+
+  <label for="file_title" style="font-size: 14px;">File Title:</label>
+  <input type="text" id="file_title" name="file_title" required style="font-size: 14px; padding: 5px; width: 50%;">
+
+  <label for="year" style="font-size: 14px;">Year:</label>
+  <input type="number" id="year" name="year" style="font-size: 14px; padding: 5px; width: 50%;"><br>
+  <label for="keywords" style="font-size: 14px;">Keywords:</label>
+  <input type="text" id="keywords" name="keywords" style="font-size: 14px; padding: 5px; width: 50%;"><br>
+
+  <label for="file" style="font-size: 14px;">Select a file:</label>
+  <input type="file" id="file" name="file" style="font-size: 14px; padding: 5px; width: 50%;">
+  <button type="submit" style="font-size: 14px; padding: 5px; width:50%">Upload</button>
+</form>
+
+
+
+
+<script>
+
+let authorCount = 1;
+
+function addAuthor() {
+  authorCount++;
+  const container = document.getElementById("author-container");
+  const label = document.createElement("label");
+  label.setAttribute("for", "author" + authorCount);
+  label.textContent = "Author " + authorCount + " name:";
+  const input = document.createElement("input");
+  input.setAttribute("type", "text");
+  input.setAttribute("id", "author" + authorCount);
+  input.setAttribute("name", "author" + authorCount);
+  container.appendChild(label);
+  container.appendChild(input);
+  container.appendChild(document.createElement("br"));
+}
+
+
+function submitForm(event) {
+
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+  
+  const author = Array.from({ length: authorCount }, (_, i) => formData.get('author' + (i + 1))).join(', ');
+  const file_title = formData.get('file_title'); // uncomment this line
+  const year = formData.get('year');
+  const keywords = formData.get('keywords');
+  const file = formData.get('file');
+  //const file_id = formData.get('file_id');
+
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', 'http://localhost:5000/upload', true);
+
+  const newFormData = new FormData();
+ 
+  newFormData.append('author', author);
+  newFormData.append('file_title', file_title); // add this line
+  newFormData.append('year', year);
+  newFormData.append('keywords', keywords);
+  newFormData.append('file', file);
+  
+xhr.onload = function () {
+    if (xhr.status === 200) {
+      console.log('File uploaded successfully');
+
+      // Create modal dialog
+      const modal = document.createElement("div");
+      modal.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+      modal.style.position = "fixed";
+      modal.style.top = "0";
+      modal.style.left = "0";
+      modal.style.right = "0";
+      modal.style.bottom = "0";
+      modal.style.display = "flex";
+      modal.style.alignItems = "center";
+      modal.style.justifyContent = "center";
+      modal.style.zIndex = "1000";
+
+      const modalContent = document.createElement("div");
+      modalContent.style.backgroundColor = "lightgreen";
+      modalContent.style.padding = "20px";
+      modalContent.style.borderRadius = "10px";
+      modalContent.style.textAlign = "center";
+      modalContent.textContent = "File uploaded successfully!";
+      modal.appendChild(modalContent);
+
+      // Add modal dialog to the page
+      document.body.appendChild(modal);
+
+      // Remove modal dialog and reset input fields after 1 second
+    setTimeout(function () {
+    const form = document.getElementById("my-form");
+       modal.parentNode.removeChild(modal);
+        form.reset();
+        }, 1000);
+        } else {
+          console.error('Upload failed with status', xhr.status);
+        }
+      };
+
+  xhr.send(newFormData);
+
+}
+
+
+</script>
+
+</body>
+
+</html>
